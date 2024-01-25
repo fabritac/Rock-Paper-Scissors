@@ -16,11 +16,9 @@ function getPlayerChoice() {
     return choice.toLowerCase();
 }
 
-function playRound() {
-    let playerSelection = getPlayerChoice();
-    let computerSelection = getComputerChoice();
+function playRound(playerChoice, computerChoice) {
 
-    if (playerSelection === computerSelection) return 'It is a tie!';
+    if (playerChoice === computerChoice) return 'It is a tie!';
 
     const winConditions = [
         ['paper', 'rock'],
@@ -29,7 +27,7 @@ function playRound() {
     ];
 
     for (const [player, computer] of winConditions) {
-        if (playerSelection === player && computerSelection === computer) {
+        if (playerChoice === player && computerChoice === computer) {
             return 'You win!';
         }
     }
@@ -37,28 +35,37 @@ function playRound() {
     return 'Computer wins!';
 }
 
-function game() {
-    let playerWins = 0;
-    let computerWins = 0;
+const Rock = document.createElement('button');    
+const Paper = document.createElement('button');
+const Scissors = document.createElement('button');
+const Results = document.createElement('div');
 
-    while (playerWins < 5 && computerWins < 5) {
-	let result = playRound();
-	console.log(result);
-	console.log(playerWins);
-	console.log(computerWins);
+Rock.textContent = 'Rock';
+Paper.textContent = 'Paper';
+Scissors.textContent = 'Scissors';
 
-	if (result === 'You win!') {
-	    playerWins++;
-	} else if (result === 'Computer wins!') {
-	    computerWins++;
-	}
-    }
+Rock.addEventListener('click', function() {
+    const computerChoice = getComputerChoice();
+    const result = playRound('rock', computerChoice);
+    console.log(result);
+    Results.textContent = result;
+});
 
-    if (playerWins === 5) {
-	alert('Congratulations! You won the game!');
-    } else {
-	alert('Sorry, the computer won the game. Better luck next time!');
-    }
-}
+Paper.addEventListener('click', function() {
+    const computerChoice = getComputerChoice();
+    const result = playRound('paper', computerChoice);
+    console.log(result);
+    Results.textContent = result;
+});
 
-game();
+Scissors.addEventListener('click', function() {
+    const computerChoice = getComputerChoice();
+    const result = playRound('scissors', computerChoice);
+    console.log(result);
+    Results.textContent = result;
+});
+
+document.body.appendChild(Rock);
+document.body.appendChild(Paper);
+document.body.appendChild(Scissors);
+document.body.appendChild(Results);
