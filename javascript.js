@@ -11,11 +11,6 @@ function getComputerChoice() {
     }
 }
 
-function getPlayerChoice() {
-    let choice = prompt("Enter your choice");
-    return choice.toLowerCase();
-}
-
 function playRound(playerChoice, computerChoice) {
 
     if (playerChoice === computerChoice) return 'It is a tie!';
@@ -35,37 +30,47 @@ function playRound(playerChoice, computerChoice) {
     return 'Computer wins!';
 }
 
-const Rock = document.createElement('button');    
-const Paper = document.createElement('button');
-const Scissors = document.createElement('button');
+function countWins(playerWins, computerWins, result) {
+
+    if (result === 'You win!') {
+	playerWins++;
+    }
+
+    if (result === 'Computer wins!') {
+	computerWins++;
+    }
+
+    return [playerWins, computerWins];
+}
+
+const Rock = createButton('Rock');
+const Paper = createButton('Paper');
+const Scissors = createButton('Scissors');
 const Results = document.createElement('div');
+const WinCounter = document.createElement('div');
 
-Rock.textContent = 'Rock';
-Paper.textContent = 'Paper';
-Scissors.textContent = 'Scissors';
+let playerWins = 0;
+let computerWins = 0;
+WinCounter.textContent = `Player: ${playerWins}, Computer: ${computerWins}`;
 
-Rock.addEventListener('click', function() {
+function createButton(text) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.addEventListener('click', () => handleButtonClick(text.toLowerCase()));
+    document.body.appendChild(button);
+    return button;
+}
+
+function handleButtonClick(choice) {
     const computerChoice = getComputerChoice();
-    const result = playRound('rock', computerChoice);
+    const result = playRound(choice, computerChoice);
     console.log(result);
     Results.textContent = result;
-});
 
-Paper.addEventListener('click', function() {
-    const computerChoice = getComputerChoice();
-    const result = playRound('paper', computerChoice);
-    console.log(result);
-    Results.textContent = result;
-});
+    [playerWins, computerWins] = countWins(playerWins, computerWins, result);
+    WinCounter.textContent = `Player: ${playerWins}, Computer: ${computerWins}`;
+}
 
-Scissors.addEventListener('click', function() {
-    const computerChoice = getComputerChoice();
-    const result = playRound('scissors', computerChoice);
-    console.log(result);
-    Results.textContent = result;
-});
-
-document.body.appendChild(Rock);
-document.body.appendChild(Paper);
-document.body.appendChild(Scissors);
+document.body.appendChild(WinCounter);
 document.body.appendChild(Results);
+
